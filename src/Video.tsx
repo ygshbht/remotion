@@ -1,52 +1,54 @@
-import {Composition} from 'remotion';
-import {HelloWorld} from './HelloWorld';
-import {Logo} from './HelloWorld/Logo';
-import {Subtitle} from './HelloWorld/Subtitle';
-import {Title} from './HelloWorld/Title';
+import {
+	Composition,
+	interpolate,
+	useCurrentFrame,
+	useVideoConfig,
+	spring,
+	Sequence,
+} from 'remotion';
 
 export const RemotionVideo: React.FC = () => {
+	// Return <VideoComponent />;
 	return (
-		<>
+		<div>
 			<Composition
-				id="HelloWorld"
-				component={HelloWorld}
+				id="MyVideo"
+				component={VideoComponent}
 				durationInFrames={150}
 				fps={30}
 				width={1920}
 				height={1080}
-				defaultProps={{
-					titleText: 'Welcome to Remotion',
-					titleColor: 'black',
-				}}
+				// Optionally, you can define props that get passed to the component
 			/>
-			<Composition
-				id="Logo"
-				component={Logo}
-				durationInFrames={200}
-				fps={30}
-				width={1920}
-				height={1080}
-			/>
-			<Composition
-				id="Title"
-				component={Title}
-				durationInFrames={100}
-				fps={30}
-				width={1920}
-				height={1080}
-				defaultProps={{
-					titleText: 'Welcome to Remotion',
-					titleColor: 'black',
-				}}
-			/>
-			<Composition
-				id="Subtitle"
-				component={Subtitle}
-				durationInFrames={100}
-				fps={30}
-				width={1920}
-				height={1080}
-			/>
-		</>
+		</div>
 	);
+};
+
+const VideoComponent = () => {
+	return (
+		<div
+			style={{
+				flex: 1,
+				textAlign: 'center',
+				fontSize: '7em',
+				background: 'white',
+			}}
+		>
+			<Sequence from={0} durationInFrames={40}>
+				<Title title="Hello" />
+			</Sequence>
+			<Sequence from={40}>
+				<Title title="World" />
+			</Sequence>
+		</div>
+	);
+};
+
+const Title: React.FC<{title: string}> = ({title}) => {
+	const frame = useCurrentFrame();
+	const opacity = interpolate(frame, [0, 20], [0, 1], {
+		extrapolateRight: 'clamp',
+	});
+
+	return <div style={{opacity}}>{title}</div>;
 };
