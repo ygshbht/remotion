@@ -5,7 +5,9 @@ import {
 	useVideoConfig,
 	spring,
 	Sequence,
+	getInputProps,
 } from 'remotion';
+import ThreeExample from './ThreeExample';
 
 export const RemotionVideo: React.FC = () => {
 	// Return <VideoComponent />;
@@ -25,6 +27,7 @@ export const RemotionVideo: React.FC = () => {
 };
 
 const VideoComponent = () => {
+	console.log(getInputProps());
 	return (
 		<div
 			style={{
@@ -34,10 +37,11 @@ const VideoComponent = () => {
 				background: 'white',
 			}}
 		>
-			<Sequence from={0} durationInFrames={40}>
-				<Title title="Hello" />
+			<Sequence from={0} durationInFrames={80}>
+				<Title title={`Hello ${JSON.stringify(getInputProps())}`} />
+				<ThreeExample />
 			</Sequence>
-			<Sequence from={40}>
+			<Sequence from={80}>
 				<Title title="World" />
 			</Sequence>
 		</div>
